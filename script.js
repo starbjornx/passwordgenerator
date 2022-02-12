@@ -90,72 +90,32 @@ var specialChar = [
 ];
 //targets the generate ID #generate (button)
 var generateBtn = document.querySelector("#generate");
+
 function generatePassword() {
+  var characterList = [];
+  var password = [];
+
   var passLength = prompt("Choose between 8 and 128 characters long.");
-  var lowerPass = confirm("Would you like lower case?");
-  var upperPass = confirm("Would you like upper case?");
-  var numericPass = confirm("Would you like numbers?");
-  var specialPass = confirm("Would you like special characters?");
-
-  if (passLength > 7 && passLength < 129) {
+  if (passLength < 8 || passLength > 128) {
+    alert("Must choose between 8 and 128 characters long.");
   } else {
-    passLength = prompt("Must choose between 8 and 128 characters long.");
-  }
-  if (lowerPass || upperPass || numericPass || specialPass === true) {
-  } else {
-    alert("You must choose at least one requirement.");
-  }
+    var lowerPass = confirm("Would you like lower case?");
+    var upperPass = confirm("Would you like upper case?");
+    var numericPass = confirm("Would you like numbers?");
+    var specialPass = confirm("Would you like special characters?");
+    //validate input
+    if (lowerPass) characterList = characterList.concat(lowerCase);
+    if (upperPass) characterList = characterList.concat(upperCase);
+    if (numericPass) characterList = characterList.concat(numericChar);
+    if (specialPass) characterList = characterList.concat(specialChar);
 
-  // something to store the final output of password.
-
-  var x = Math.floor(Math.random(passwordLength));
-  var passwordArray = [];
-  var finalPassword = "";
-  if (lowerPass === true) {
-    passwordArray = passwordArray.concat(lowerCase);
+    for (var x = 0; x < passLength; x++) {
+      randomPos = Math.floor(Math.random() * characterList.length);
+      password.push(characterList[randomPos]);
+    }
   }
-  if (upperPass === true) {
-    passwordArray = passwordArray.concat(upperCase);
-  }
-  if (numericPass === true) {
-    passwordArray = passwordArray.concat(numericChar);
-  }
-  if (specialPass === true) {
-    passwordArray = passwordArray.concat(specialChar);
-  }
-  console.log(passwordArray);
-  // var finalPassword =  {
-  //   getRandomInt: function (max) {
-  //     return Math.floor(Math.random())
-  //   }
-  // }
-
-  // return finalPassword;
-  //end of code line here do not lose!!
-}
-
-// Write password to the #password input
-function writePassword() {
-  var password = generatePassword();
   var passwordText = document.querySelector("#password");
-
-  // var lowerPass = window.confrim(true);
-  // var upperPass = window.confrim(true);
-  // var numericPass = window.confrim(true);
-  // var specialPass = window.confrim(true);
-  // if (lowerPass && upperPass && numericPass && specialPass === false) {
-  //   windows.prompt("You must choose one response.");
-
-  passwordText.value = password;
+  passwordText.value = password.join("");
 }
 
-// var random = {
-//   getRandomInt: function (max) {
-//     return Math.floor(Math.random() * max);
-//   },
-// };
-// random.getRandomInt(finalPasswordArray.length);
-// ----------------------------
-
-// // Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
+generateBtn.addEventListener("click", generatePassword);
